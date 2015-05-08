@@ -1,0 +1,12 @@
+# Update IP_GOES_HERE with the IP address of your corporate authorized NTP servers
+ipvar NTP_SERVERS [IP_GOES_HERE,IP_GOES_HERE,IP_GOES_HERE,IP_GOES_HERE]
+
+# If using ignore list uncomment these two lines
+#ipvar NTP_IGNORE [IP_GOES_HERE,IP_GOES_HERE]
+#pass udp $NTP_IGNORE any -> any 123 (msg:NTP Ignore Hosts"; classtype:misc-activity; sid:99990058; rev:1;)
+
+
+pass udp $NTP_SERVERS 123 -> any 123 (msg:"NTP Authorized traffic from NTP servers"; classtype:misc-activity; sid:99990053; rev:1;)
+pass udp any 123 -> $NTP_SERVERS 123 (msg:"NTP Authorized traffic to NTP servers"; classtype:misc-activity; sid:99990054; rev:1;)
+
+alert udp $HOME_NET any -> !$NTP_SERVERS 123 (msg:"NTP to Rogue NTP server(s)"; classtype:bad-unknown; threshold:type limit, track by_src, count 1, seconds 3600; sid:9990055; rev:7;)

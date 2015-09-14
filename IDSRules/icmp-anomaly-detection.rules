@@ -1,56 +1,27 @@
-# ICMP Anomalyzer orignally developed by Eric Conrad and Seth Misenar
+# IP of hosts to ignore for ICMP Anomalyzer rules
+# Add IP addresses to ICMP_SRC_HOSTS if you have setup scanning devices that use ICMP pings to do host checks
+# and the ICMP packet uses a different payload than whitelisted below
+ipvar ICMP_SRC_HOSTS [192.168.0.1]
+# Add IP addresses to ICMP_DST_HOSTS if you have special systems that a custom ICMP ping gets generated against
+ipvar ICMP_DST_HOSTS [192.168.0.1]
 
-# Original ICMP Anomalyzer rules
+# ICMP Anomalyzer rules
 pass icmp any any -> any any (msg:"Anomalyzer: OSX or Linux ICMP Echo Request"; icode:0; itype:8; dsize:56; content:"!\"#$%&'()*+,-./01234567"; classtype:misc-activity; sid:5110002; rev:1;)
 pass icmp any any -> any any (msg:"Anomalyzer: Windows XP/7/8 ICMP Echo Request"; icode:0; itype:8; dsize:32; content:"abcdefghijklmnopqrstuvwabcdefghi"; classtype:misc-activity; sid:5110004; rev:1; nocase;)
 pass icmp any any -> any any (msg:"Anomalyzer: Nmap ICMP Echo Request"; icode:0; itype:8; dsize:0; classtype:misc-activity; sid:5110005; rev:1;)
-
-# Added ICMP Anomalyzer rules
 pass icmp any any -> any any (msg:"Anomalyzer: Group Policy Slow Link Detection"; icode:0; itype:8; dsize:>1400; content:"WANG2"; classtype:misc-activity; sid:5110006; rev:1;)
 pass icmp any any -> any any (msg:"Anomalyzer: Solarwinds Status Query"; icode:0; itype:8; dsize:23; content:"SolarWinds Status Query"; classtype:misc-activity; sid:5110007; rev:1;)
+pass icmp any any -> any any (msg:"Anomalyzer: Domain Controller ICMP Traffic"; icode:0; itype:8; dsize:1; content:"?"; classtype:misc-activity; sid:5110008; rev:1;)
+pass icmp any any -> any any (msg:"Anomalyzer: McAfee ICMP ping requests"; icode:0; itype:8; dsize:36; content:"EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE"; offset:3; classtype:misc-activity; sid:5110009; rev:1;)
+pass icmp any any -> any any (msg:"Anomalyzer: Lots of Xs"; icode:0; itype:8; dsize:32; content:"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"; classtype:misc-activity; sid:5110010; rev:1;)
+pass icmp any any -> any any (msg:"Anomalyzer: DHCP ICMP Duplicate IP Check"; icode:0; itype:8; dsize:11; content:"DhcpIcmpChk"; classtype:misc-activity; sid:5110011; rev:1;)
 pass icmp any any -> any any (msg:"Anomalyzer: Solarwinds ICMP Version 5"; icode:0; itype:8; dsize:<80; content:"SolarWinds.Net ICMP Version 5.0.4.16Copyright  1995-2005 SolarWinds.Net"; classtype:misc-activity; sid:5110012; rev:1;)
 pass icmp any any -> any any (msg:"Anomalyzer: Solarwinds Sonar ICMP Scan"; icode:0; itype:8; dsize:24; content:"Orion Network Sonar Scan"; classtype:misc-activity; sid:5110013; rev:1;)
-pass icmp any any -> any any (msg:"Anomalyzer: McAfee ICMP ping requests"; icode:0; itype:8; dsize:36; content:"EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE"; offset:3; classtype:misc-activity; sid:5110009; rev:1;)
-pass icmp any any -> any any (msg:"Anomalyzer: DHCP ICMP Duplicate IP Check"; icode:0; itype:8; dsize:11; content:"DhcpIcmpChk"; classtype:misc-activity; sid:5110011; rev:1;)
-pass icmp any any -> any any (msg:"Anomalyzer: ICMP Brother Printer DNS Check 1"; icode:0; itype:8; dsize:56; content:"NODENAME"; content:"BRN"; classtype:misc-activity; sid:5110031; rev:1;)
-pass icmp any any -> any any (msg:"Anomalyzer: ICMP Brother Printer DNS Check 2"; icode:0; itype:8; dsize:56; content:"ECFCEOD"; classtype:misc-activity; sid:5110032; rev:1;)
-pass icmp any any -> any any (msg:"Anomalyzer: ICMP Brother Printer DNS Check 3"; icode:0; itype:8; dsize:56; content:"ction: close"; content:"Server: debut"; classtype:misc-activity; sid:5110033; rev:1;)
-pass icmp any any -> any any (msg:"Anomalyzer: ICMP Brother Printer DNS Check 4"; icode:0; itype:8; dsize:56; content:"onnection: Keep-Alive"; content:"Pragma: no-cache"; content:"Server: deb"; classtype:misc-activity; sid:5110034; rev:1;)
-pass icmp any any -> any any (msg:"Anomalyzer: ICMP Brother Printer DNS Check 4"; icode:0; itype:8; dsize:56; content:"onnection: close"; content:"debut"; content:"Pragma"; classtype:misc-activity; sid:5110036; rev:1;)
-pass icmp any any -> any any (msg:"Anomalyzer: All As"; icode:0; itype:8; dsize:64; content:"|AA AA AA AA AA AA AA AA AA AA AA AA AA AA AA AA AA AA AA AA AA AA AA AA AA AA AA AA AA AA AA AA|"; classtype:misc-activity; sid:5110033; rev:1;)
-pass icmp any any -> any any (msg:"Anomalyzer: All 0s"; icode:0; itype:8; dsize:56; content:"|00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00|"; classtype:misc-activity; sid:5110034; rev:1;)
-pass icmp any any -> any any (msg:"Anomalyzer: Domain Controller ICMP Traffic"; icode:0; itype:8; dsize:1; content:"?"; classtype:misc-activity; sid:5110008; rev:1;)
-pass icmp any any -> any any (msg:"Anomalyzer: Lots of Xs"; icode:0; itype:8; dsize:32; content:"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"; classtype:misc-activity; sid:5110010; rev:1;)
-pass icmp any any -> any any (msg:"Anomalyzer: ICMP to Domain Controllers 1"; icode:0; itype:8; dsize:8; content:"|4F BF 1A 55 24 29 06 00|"; classtype:misc-activity; sid:5110014; rev:1;)
-pass icmp any any -> any any (msg:"Anomalyzer: ICMP to Domain Controllers 2"; icode:0; itype:8; dsize:8; content:"|BD 1F 00 30 41 3F 1C 73|"; classtype:misc-activity; sid:5110015; rev:1;)
-pass icmp any any -> any any (msg:"Anomalyzer: ICMP to Domain Controllers 3"; icode:0; itype:8; dsize:8; content:"|55 BF 1A 55 B2 E6 0A 00|"; classtype:misc-activity; sid:5110016; rev:1;)
-pass icmp any any -> any any (msg:"Anomalyzer: ICMP to Domain Controllers 4"; icode:0; itype:8; dsize:8; content:"|73 BF 1A 55 4E 31 0B 00|"; classtype:misc-activity; sid:5110017; rev:1;)
-pass icmp any any -> any any (msg:"Anomalyzer: ICMP to Domain Controllers 5"; icode:0; itype:8; dsize:8; content:"|73 BF 1A 55 3D 7E 06 00|"; classtype:misc-activity; sid:5110018; rev:1;)
-pass icmp any any -> any any (msg:"Anomalyzer: ICMP to Domain Controllers 6"; icode:0; itype:8; dsize:8; content:"|57 12 1C 55 68 B6 06 00|"; classtype:misc-activity; sid:5110019; rev:1;)
-pass icmp any any -> any any (msg:"Anomalyzer: ICMP to Domain Controllers 7"; icode:0; itype:8; dsize:8; content:"|57 12 1C 55 68 30 01 00|"; classtype:misc-activity; sid:5110020; rev:1;)
-pass icmp any any -> any any (msg:"Anomalyzer: ICMP to Domain Controllers 8"; icode:0; itype:8; dsize:8; content:"|39 12 1C 55 76 6E 05 00|"; classtype:misc-activity; sid:5110021; rev:1;)
-pass icmp any any -> any any (msg:"Anomalyzer: ICMP to Domain Controllers 9"; icode:0; itype:8; dsize:8; content:"|32 12 1C 55 E7 2B 0F 00|"; classtype:misc-activity; sid:5110022; rev:1;)
-pass icmp any any -> any any (msg:"Anomalyzer: ICMP to Domain Controllers 10"; icode:0; itype:8; dsize:8; content:"|AE 4A 1C 55 B6 D7 03 00|"; classtype:misc-activity; sid:5110023; rev:1;)
-pass icmp any any -> any any (msg:"Anomalyzer: ICMP to Domain Controllers 11"; icode:0; itype:8; dsize:8; content:"|FA B7 1E 55 39 65 01 00|"; classtype:misc-activity; sid:5110024; rev:1;)
-pass icmp any any -> any any (msg:"Anomalyzer: ICMP to Domain Controllers 12"; icode:0; itype:8; dsize:8; content:"|1E B8 1E 55 91 09 05 00|"; classtype:misc-activity; sid:5110025; rev:1;)
-pass icmp any any -> any any (msg:"Anomalyzer: ICMP to Domain Controllers 13"; icode:0; itype:8; dsize:8; content:"|79 C3 1E 55 D1 CB 03 00|"; classtype:misc-activity; sid:5110026; rev:1;)
-pass icmp any any -> any any (msg:"Anomalyzer: ICMP to Domain Controllers 14"; icode:0; itype:8; dsize:8; content:"|F4 FB 1E 55 93 96 0E 00|"; classtype:misc-activity; sid:5110027; rev:1;)
-pass icmp any any -> any any (msg:"Anomalyzer: ICMP to Domain Controllers 15"; icode:0; itype:8; dsize:8; content:"|88 03 24 55 13 0B 04 00|"; classtype:misc-activity; sid:5110028; rev:1;)
-pass icmp any any -> any any (msg:"Anomalyzer: ICMP to Domain Controllers 16"; icode:0; itype:8; dsize:8; content:"|8E 03 24 55 57 36 07 00|"; classtype:misc-activity; sid:5110029; rev:1;)
-pass icmp any any -> any any (msg:"Anomalyzer: ICMP to Domain Controllers 17"; icode:0; itype:8; dsize:8; content:"|AC 03 24 55 A4 0E 0E 00|"; classtype:misc-activity; sid:5110030; rev:1;)
-pass icmp any any -> any any (msg:"Anomalyzer: ICMP to Domain Controllers 18"; icode:0; itype:8; dsize:8; content:"|12 0F 24 55 06 52 09 00|"; classtype:misc-activity; sid:5110035; rev:1;)
-pass icmp any any -> any any (msg:"Anomalyzer: ICMP to Domain Controllers 19"; icode:0; itype:8; dsize:8; content:"|9C F6 1B 00 41 3F E7 73|"; classtype:misc-activity; sid:5110037; rev:1;)
-pass icmp any any -> any any (msg:"Anomalyzer: ICMP to Domain Controllers 20"; icode:0; itype:8; dsize:8; content:"|03 3C 24 55 62 09 08 00|"; classtype:misc-activity; sid:5110038; rev:1;)
-pass icmp any any -> any any (msg:"Anomalyzer: ICMP to Domain Controllers 21"; icode:0; itype:8; dsize:8; content:"|28 3C 24 55 66 6F 03 00|"; classtype:misc-activity; sid:5110039; rev:1;)
-pass icmp any any -> any any (msg:"Anomalyzer: ICMP to Domain Controllers 22"; icode:0; itype:8; dsize:8; content:"|69 3C 24 55 B9 35 0F 00|"; classtype:misc-activity; sid:5110040; rev:1;)
-pass icmp any any -> any any (msg:"Anomalyzer: ICMP to Domain Controllers 23"; icode:0; itype:8; dsize:8; content:"|A3 74 24 55 AC 1B 04 00|"; classtype:misc-activity; sid:5110041; rev:1;)
-pass icmp any any -> any any (msg:"Anomalyzer: ICMP to Domain Controllers 24"; icode:0; itype:8; dsize:8; content:"|A3 74 24 55 19 73 07 00|"; classtype:misc-activity; sid:5110042; rev:1;)
-pass icmp any any -> any any (msg:"Anomalyzer: ICMP to Domain Controllers 25"; icode:0; itype:8; dsize:8; content:"|BD 1F C0 2F 41 3F EA 72|"; classtype:misc-activity; sid:5110043; rev:1;)
-pass icmp any any -> $DNS_SERVERS any (msg:"Anomalyzer: ICMP to DNS Servers"; icode:0; itype:8; dsize:<57; classtype:misc-activity; sid:5110048; rev:1;)
-pass icmp any any -> any any (msg:"Anomalyzer: Domain controller to domain controller"; icode:0; itype:8; dsize:32; content:"|00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00|"; classtype:misc-activity; sid:5110049; rev:1;)
-
-# YOU MUST MODIFY THIS LINE TO INCLUDE SYSTEMS YOU JUST WANT TO IGNORE ICMP TRAFFIC FROM
-pass icmp [IP_LIST] any -> any any (msg:"ICMP Pass: Ignore Hosts"; icode:0; itype:8; classtype:misc-activity; sid:5110050; rev:1;)
-
-# Final rule to alert on any ICMP request traffic not matching anything above
-alert icmp any any -> any any (msg:"Anomalyzer: Other Echo Request"; icode:0; itype:8; classtype:misc-activity; sid:5110000; rev:1;)
+pass icmp any any -> $DNS_SERVERS any (msg:"Anomalyzer: ICMP to DNS Servers"; icode:0; itype:8; dsize:<57; classtype:misc-activity; threshold:type limit, track by_src, count 1, seconds 60; sid:5110048; rev:2;) 
+pass icmp any any -> any any (msg:"Anomalyzer: Domain controller to domain controller"; icode:0; itype:8; dsize:32; content:"|00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00|"; classtype:misc-activity; threshold:type limit, track by_src, count 1, seconds 60; sid:5110049; rev:2;)
+pass icmp any any -> any any (msg:"Anomalyzer: All As"; icode:0; itype:8; dsize:64; content:"|AA AA AA AA AA AA AA AA AA AA AA AA AA AA AA AA AA AA AA AA AA AA AA AA AA AA AA AA AA AA AA AA|"; classtype:misc-activity; sid:5110044; rev:1;)
+pass icmp any any -> any any (msg:"Anomalyzer: All 0s"; icode:0; itype:8; dsize:56; content:"|00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00|"; classtype:misc-activity; sid:5110045; rev:1;)
+pass icmp [10.0.0.26,10.0.0.11,10.0.23.4,10.0.32.3,10.0.32.9,10.0.4.201,10.0.4.202,10.0.4.144,10.0.4.161,10.0.4.187,10.0.4.185,10.5.55.11,192.168.228.55,10.5.70.26,10.3.61.56,10.0.4.108,10.0.4.161,10.0.4.144,172.16.0.177] any -> any any (msg:"ICMP Pass: Ignore Hosts"; icode:0; itype:8; classtype:misc-activity; sid:5110050; rev:1;)
+pass icmp any any -> [10.0.29.10,10.0.4.36] any (msg:"ICMP Pass: Ignore Hosts"; icode:0; itype:8; classtype:misc-activity; sid:5110055; rev:1;)
+alert icmp any any -> any any (msg:"Anomalyzer Other Echo Request"; icode:0; itype:8; dsize:>19; classtype:misc-activity; sid:5110000; rev:3;)
+alert icmp any any -> any any (msg:"Anomalyzer Other Echo Request"; icode:0; itype:8; dsize:<20; classtype:misc-activity; threshold:type limit, track by_src, count 4, seconds 60; sid:5110063; rev:3;)

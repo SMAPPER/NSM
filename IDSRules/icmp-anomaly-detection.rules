@@ -1,6 +1,8 @@
 # IP of hosts to ignore for ICMP Whitecap rules
 # Add IP addresses to ICMP_SRC_HOSTS if you have setup scanning devices that use ICMP pings to do host checks
 # and the ICMP packet uses a different payload than whitelisted below
+# This is often needed for systems like load balancers that constantly ping back end nodes to make sure they are
+# online
 ipvar ICMP_SRC_HOSTS_IGNORE [192.168.0.1]
 # Add IP addresses to ICMP_DST_HOSTS if you have special systems that a custom ICMP ping gets generated against
 ipvar ICMP_DST_HOSTS_IGNORE [192.168.0.1]

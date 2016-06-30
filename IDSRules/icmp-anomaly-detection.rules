@@ -1,27 +1,27 @@
-# IP of hosts to ignore for ICMP Anomalyzer rules
+# IP of hosts to ignore for ICMP Whitecap rules
 # Add IP addresses to ICMP_SRC_HOSTS if you have setup scanning devices that use ICMP pings to do host checks
 # and the ICMP packet uses a different payload than whitelisted below
-ipvar ICMP_SRC_HOSTS [192.168.0.1]
+ipvar ICMP_SRC_HOSTS_IGNORE [192.168.0.1]
 # Add IP addresses to ICMP_DST_HOSTS if you have special systems that a custom ICMP ping gets generated against
-ipvar ICMP_DST_HOSTS [192.168.0.1]
+ipvar ICMP_DST_HOSTS_IGNORE [192.168.0.1]
 
-# ICMP Anomalyzer rules
-pass icmp any any -> any any (msg:"Anomalyzer: OSX or Linux ICMP Echo Request"; icode:0; itype:8; dsize:56; content:"!\"#$%&'()*+,-./01234567"; classtype:misc-activity; sid:5110002; rev:1;)
-pass icmp any any -> any any (msg:"Anomalyzer: Windows XP/7/8 ICMP Echo Request"; icode:0; itype:8; dsize:32; content:"abcdefghijklmnopqrstuvwabcdefghi"; classtype:misc-activity; sid:5110004; rev:1; nocase;)
-pass icmp any any -> any any (msg:"Anomalyzer: Nmap ICMP Echo Request"; icode:0; itype:8; dsize:0; classtype:misc-activity; sid:5110005; rev:1;)
-pass icmp any any -> any any (msg:"Anomalyzer: Group Policy Slow Link Detection"; icode:0; itype:8; dsize:>1400; content:"WANG2"; classtype:misc-activity; sid:5110006; rev:1;)
-pass icmp any any -> any any (msg:"Anomalyzer: Solarwinds Status Query"; icode:0; itype:8; dsize:23; content:"SolarWinds Status Query"; classtype:misc-activity; sid:5110007; rev:1;)
-pass icmp any any -> any any (msg:"Anomalyzer: Domain Controller ICMP Traffic"; icode:0; itype:8; dsize:1; content:"?"; classtype:misc-activity; sid:5110008; rev:1;)
-pass icmp any any -> any any (msg:"Anomalyzer: McAfee ICMP ping requests"; icode:0; itype:8; dsize:36; content:"EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE"; offset:3; classtype:misc-activity; sid:5110009; rev:1;)
-pass icmp any any -> any any (msg:"Anomalyzer: Lots of Xs"; icode:0; itype:8; dsize:32; content:"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"; classtype:misc-activity; sid:5110010; rev:1;)
-pass icmp any any -> any any (msg:"Anomalyzer: DHCP ICMP Duplicate IP Check"; icode:0; itype:8; dsize:11; content:"DhcpIcmpChk"; classtype:misc-activity; sid:5110011; rev:1;)
-pass icmp any any -> any any (msg:"Anomalyzer: Solarwinds ICMP Version 5"; icode:0; itype:8; dsize:<80; content:"SolarWinds.Net ICMP Version 5.0.4.16Copyright  1995-2005 SolarWinds.Net"; classtype:misc-activity; sid:5110012; rev:1;)
-pass icmp any any -> any any (msg:"Anomalyzer: Solarwinds Sonar ICMP Scan"; icode:0; itype:8; dsize:24; content:"Orion Network Sonar Scan"; classtype:misc-activity; sid:5110013; rev:1;)
-pass icmp any any -> $DNS_SERVERS any (msg:"Anomalyzer: ICMP to DNS Servers"; icode:0; itype:8; dsize:<57; classtype:misc-activity; threshold:type limit, track by_src, count 1, seconds 60; sid:5110048; rev:2;) 
-pass icmp any any -> any any (msg:"Anomalyzer: Domain controller to domain controller"; icode:0; itype:8; dsize:32; content:"|00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00|"; classtype:misc-activity; threshold:type limit, track by_src, count 1, seconds 60; sid:5110049; rev:2;)
-pass icmp any any -> any any (msg:"Anomalyzer: All As"; icode:0; itype:8; dsize:64; content:"|AA AA AA AA AA AA AA AA AA AA AA AA AA AA AA AA AA AA AA AA AA AA AA AA AA AA AA AA AA AA AA AA|"; classtype:misc-activity; sid:5110044; rev:1;)
-pass icmp any any -> any any (msg:"Anomalyzer: All 0s"; icode:0; itype:8; dsize:56; content:"|00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00|"; classtype:misc-activity; sid:5110045; rev:1;)
-pass icmp [10.0.0.26,10.0.0.11,10.0.23.4,10.0.32.3,10.0.32.9,10.0.4.201,10.0.4.202,10.0.4.144,10.0.4.161,10.0.4.187,10.0.4.185,10.5.55.11,192.168.228.55,10.5.70.26,10.3.61.56,10.0.4.108,10.0.4.161,10.0.4.144,172.16.0.177] any -> any any (msg:"ICMP Pass: Ignore Hosts"; icode:0; itype:8; classtype:misc-activity; sid:5110050; rev:1;)
-pass icmp any any -> [10.0.29.10,10.0.4.36] any (msg:"ICMP Pass: Ignore Hosts"; icode:0; itype:8; classtype:misc-activity; sid:5110055; rev:1;)
-alert icmp any any -> any any (msg:"Anomalyzer Other Echo Request"; icode:0; itype:8; dsize:>19; classtype:misc-activity; sid:5110000; rev:3;)
-alert icmp any any -> any any (msg:"Anomalyzer Other Echo Request"; icode:0; itype:8; dsize:<20; classtype:misc-activity; threshold:type limit, track by_src, count 4, seconds 60; sid:5110063; rev:3;)
+# ICMP Whitecap rules
+pass icmp any any -> any any (msg:"Whitecap: OSX or Linux ICMP Echo Request"; icode:0; itype:8; dsize:56; content:"!\"#$%&'()*+,-./01234567"; classtype:misc-activity; sid:5110002; rev:1;)
+pass icmp any any -> any any (msg:"Whitecap: Windows XP/7/8 ICMP Echo Request"; icode:0; itype:8; dsize:32; content:"abcdefghijklmnopqrstuvwabcdefghi"; classtype:misc-activity; sid:5110004; rev:1; nocase;)
+pass icmp any any -> any any (msg:"Whitecap: Nmap ICMP Echo Request"; icode:0; itype:8; dsize:0; classtype:misc-activity; sid:5110005; rev:1;)
+pass icmp any any -> any any (msg:"Whitecap: Group Policy Slow Link Detection"; icode:0; itype:8; dsize:>1400; content:"WANG2"; classtype:misc-activity; sid:5110006; rev:1;)
+pass icmp any any -> any any (msg:"Whitecap: Solarwinds Status Query"; icode:0; itype:8; dsize:23; content:"SolarWinds Status Query"; classtype:misc-activity; sid:5110007; rev:1;)
+pass icmp any any -> any any (msg:"Whitecap: Domain Controller ICMP Traffic"; icode:0; itype:8; dsize:1; content:"?"; classtype:misc-activity; sid:5110008; rev:1;)
+pass icmp any any -> any any (msg:"Whitecap: McAfee ICMP ping requests"; icode:0; itype:8; dsize:36; content:"EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE"; offset:3; classtype:misc-activity; sid:5110009; rev:1;)
+pass icmp any any -> any any (msg:"Whitecap: Lots of Xs"; icode:0; itype:8; dsize:32; content:"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"; classtype:misc-activity; sid:5110010; rev:1;)
+pass icmp any any -> any any (msg:"Whitecap: DHCP ICMP Duplicate IP Check"; icode:0; itype:8; dsize:11; content:"DhcpIcmpChk"; classtype:misc-activity; sid:5110011; rev:1;)
+pass icmp any any -> any any (msg:"Whitecap: Solarwinds ICMP Version 5"; icode:0; itype:8; dsize:<80; content:"SolarWinds.Net ICMP Version 5.0.4.16Copyright  1995-2005 SolarWinds.Net"; classtype:misc-activity; sid:5110012; rev:1;)
+pass icmp any any -> any any (msg:"Whitecap: Solarwinds Sonar ICMP Scan"; icode:0; itype:8; dsize:24; content:"Orion Network Sonar Scan"; classtype:misc-activity; sid:5110013; rev:1;)
+pass icmp any any -> $DNS_SERVERS any (msg:"Whitecap: ICMP to DNS Servers"; icode:0; itype:8; dsize:<57; classtype:misc-activity; threshold:type limit, track by_src, count 1, seconds 60; sid:5110048; rev:2;) 
+pass icmp any any -> any any (msg:"Whitecap: Domain controller to domain controller"; icode:0; itype:8; dsize:32; content:"|00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00|"; classtype:misc-activity; threshold:type limit, track by_src, count 1, seconds 60; sid:5110049; rev:2;)
+pass icmp any any -> any any (msg:"Whitecap: All As"; icode:0; itype:8; dsize:64; content:"|AA AA AA AA AA AA AA AA AA AA AA AA AA AA AA AA AA AA AA AA AA AA AA AA AA AA AA AA AA AA AA AA|"; classtype:misc-activity; sid:5110044; rev:1;)
+pass icmp any any -> any any (msg:"Whitecap: All 0s"; icode:0; itype:8; dsize:56; content:"|00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00|"; classtype:misc-activity; sid:5110045; rev:1;)
+pass icmp [$ICMP_SRC_HOSTS_IGNORE] any -> any any (msg:"ICMP Pass: Ignore Hosts"; icode:0; itype:8; classtype:misc-activity; sid:5110050; rev:1;)
+pass icmp any any -> [$ICMP_DST_HOSTS_IGNORE] any (msg:"ICMP Pass: Ignore Hosts"; icode:0; itype:8; classtype:misc-activity; sid:5110055; rev:1;)
+alert icmp any any -> any any (msg:"Whitecap Other Echo Request"; icode:0; itype:8; dsize:>19; classtype:misc-activity; sid:5110000; rev:3;)
+alert icmp any any -> any any (msg:"Whitecap Other Echo Request"; icode:0; itype:8; dsize:<20; classtype:misc-activity; threshold:type limit, track by_src, count 4, seconds 60; sid:5110063; rev:3;)
